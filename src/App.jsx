@@ -11,6 +11,20 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const pasredUsers = JSON.parse(localStorage.getItem('users'));
+    console.log(pasredUsers)
+    if(pasredUsers) {
+      this.setState({contacts: pasredUsers})
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('users', JSON.stringify(this.state.contacts))
+    }
+  }
+
   addUser = ({ name, number }) => {
     const { contacts } = this.state;
 
@@ -30,13 +44,13 @@ class App extends Component {
     }
   };
 
-  removeUser = (id) => {
+  removeUser = id => {
     this.setState(({ contacts }) => {
-        return {
-            contacts: contacts.filter(item => item.id !== id)
-        }
-    })
-}
+      return {
+        contacts: contacts.filter(item => item.id !== id),
+      };
+    });
+  };
 
   getFilteredUsers = () => {
     const { filter, contacts } = this.state;
@@ -66,8 +80,11 @@ class App extends Component {
           <Form onSubmit={this.addUser} />
         </Section>
         <Section title={'Contancts'}>
-
-          <Users removeUser={this.removeUser} getFilteredUsers={this.getFilteredUsers()} handleFilter={this.handleFilter} />
+          <Users
+            removeUser={this.removeUser}
+            getFilteredUsers={this.getFilteredUsers()}
+            handleFilter={this.handleFilter}
+          />
         </Section>
       </div>
     );
