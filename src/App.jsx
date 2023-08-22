@@ -4,6 +4,7 @@ import { Component } from 'react';
 import Section from 'components/Section';
 import Form from './components/Form';
 import Users from './components/Users';
+import Filter from 'components/Filter/Filter';
 
 class App extends Component {
   state = {
@@ -13,15 +14,14 @@ class App extends Component {
 
   componentDidMount() {
     const pasredUsers = JSON.parse(localStorage.getItem('users'));
-    console.log(pasredUsers)
-    if(pasredUsers) {
-      this.setState({contacts: pasredUsers})
+    if (pasredUsers) {
+      this.setState({ contacts: pasredUsers });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('users', JSON.stringify(this.state.contacts))
+      localStorage.setItem('users', JSON.stringify(this.state.contacts));
     }
   }
 
@@ -80,6 +80,7 @@ class App extends Component {
           <Form onSubmit={this.addUser} />
         </Section>
         <Section title={'Contancts'}>
+          <Filter handleFilter={this.handleFilter}/>
           <Users
             removeUser={this.removeUser}
             getFilteredUsers={this.getFilteredUsers()}
